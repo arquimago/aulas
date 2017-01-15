@@ -120,34 +120,45 @@ int hash(char *chave){
 	int hash = 0;
 	int i;
 	for(i=0;i<strlen(chave);i++){
-		hash+=chave[i];
+		hash+=(chave[i]-60);
+		//um char numerico -60 dá como resultado seu valor em int
 	}
 	hash%=10007;
+	//sim, 10.007 é primo perguntei ao Wolfram Alpha
 	return hash;
 }
 
 void lerD(char *arq, char *chave){
+	int linha = hash(chave);
+	fseek(arquivo, linha*100, SEEK_SET);
 	
 	return;
 }
 
 void gravarD(char *arq, char *chave){
+	int linha = hash(chave);
+	fseek(arquivo, linha*100, SEEK_SET);
 	
 	return;
 }
 
 void modificarD(char *arq, char *chave){
+	int linha = hash(chave);
+	fseek(arquivo, linha*100, SEEK_SET);
 	
 	return;
 }
 
 void excluirD(char *arq, char *chave){
+	int linha = hash(chave);
+	fseek(arquivo, linha*100, SEEK_SET);
 	
 	return;
 }
 
 
 int main(){
+	int i;
 	FILE *arquivo;
 	arquivo = fopen("seq.txt", "a+");
 	fclose(arquivo);
@@ -156,6 +167,10 @@ int main(){
 	arquivo = fopen("ind.ind", "a+");
 	fclose(arquivo);
 	arquivo = fopen("dir.txt", "a+");
+	for(i=0;i<10000;i++){
+		string = createLine("","");
+		fprintf(arquivo, "%s\n", string);
+	}
 	fclose(arquivo);
 
   return 0;
