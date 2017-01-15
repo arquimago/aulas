@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define TAM 100
+#define TAM 99
 
 char* createLine(char* chave, char* reg){
    	int aux, i;
@@ -51,7 +51,7 @@ void gravarS(char *arq, char *chave){
 void modificarS(char *arq, char *chave, char *new_reg){
 	FILE *arquivo = fopen(arq, "r+");
 	int linha = lerS("seq.txt", chave);
-	char* string = createLine(chave,new_reg);
+	char* string = createLine(chave, new_reg);
 	fseek(arquivo, linha*100, SEEK_SET);
 	fprintf(arquivo, "%s\n", string);
 	fclose(arquivo);
@@ -66,7 +66,7 @@ void excluirS(char *arq, char *chave){
 	string = createLine("","");
 	fprintf(arquivo, "%s\n", string);
     //acho que o while abaixo resolve a subida das linhas
-	while(fscanf(arquivo,"%[^\n]s",string);!=EOF){
+	while(fscanf(arquivo,"%[^\n]s",string) !=EOF){
 		fseek(arquivo, linha*100, SEEK_SET);
 		fprintf(arquivo, "%s\n", string);
 		linha++;
@@ -76,7 +76,7 @@ void excluirS(char *arq, char *chave){
 	fseek(arquivo, linha*100, SEEK_SET);
 	string = createLine("","");
 	fprintf(arquivo, "%s\n", string);
-	
+
 	fclose(arquivo);
 }
 
@@ -87,9 +87,9 @@ void lerI(char *arq, char *chave){
 	if(linha>=0) {
 		fseek(arquivo, linha*100, SEEK_SET);
 		fscanf(arquivo,"%s", &reg);
-		printf("Registro encontrado: %s\n", reg);	
+		printf("Registro encontrado: %s\n", reg);
 	}else{
-		printf("Registro não encontrado";
+		printf("Registro não encontrado");
 	}
 	return;
 }
@@ -102,8 +102,8 @@ void modificarI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
 	char *reg;
 	int linha = lerS("ind.ind",chave);
-	
-	
+
+
 	return;
 }
 
@@ -111,8 +111,8 @@ void excluirI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
 	char *reg;
 	int linha = lerS("ind.ind",chave);
-	
-	//no final usar excluirS no "ind.ind" 
+
+	//no final usar excluirS no "ind.ind"
 	return;
 }
 
@@ -120,8 +120,8 @@ int hash(char *chave){
 	int hash = 0;
 	int i;
 	for(i=0;i<strlen(chave);i++){
-		hash+=(chave[i]-60);
-		//um char numerico -60 dá como resultado seu valor em int
+		hash+=(chave[i]-48);
+		//um char numerico -48 dá como resultado seu valor em int
 	}
 	hash%=10007;
 	//sim, 10.007 é primo perguntei ao Wolfram Alpha
@@ -129,33 +129,39 @@ int hash(char *chave){
 }
 
 void lerD(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
 	int linha = hash(chave);
-	fseek(arquivo, linha*100, SEEK_SET);
+	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	char *reg;
 	fscanf(arquivo,"%s", &reg);
-	printf("Registro encontrado: %s\n", reg);	
+	printf("Registro encontrado: %s\n", reg);
 	return;
 }
 
 void gravarD(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
 	int linha = hash(chave);
-	fseek(arquivo, linha*100, SEEK_SET);
+	fseek(arquivo, (linha-1)*100, SEEK_SET);
+	printf("%d ", linha);
 	char* string = createLine(chave,chave);
 	fprintf(arquivo, "%s\n", string);
 	return;
 }
 
-void modificarD(char *arq, char *chave, char *newreg){
+void modificarD(char *arq, char *chave, char *new_reg){
+	FILE *arquivo = fopen(arq, "r+");
 	int linha = hash(chave);
-	fseek(arquivo, linha*100, SEEK_SET);
+	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	char* string = createLine(chave,new_reg);
 	fprintf(arquivo, "%s\n", string);
 	return;
 }
 
 void excluirD(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
+	char *string;
 	int linha = hash(chave);
-	fseek(arquivo, linha*100, SEEK_SET);
+	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	string = createLine("","");
 	fprintf(arquivo, "%s\n", string);
 	return;
@@ -163,21 +169,22 @@ void excluirD(char *arq, char *chave){
 
 
 int main(){
-	int i;
-	char *string;
-	FILE *arquivo;
-	arquivo = fopen("seq.txt", "a+");
-	fclose(arquivo);
-	arquivo = fopen("ind.txt", "a+");
-	fclose(arquivo);
-	arquivo = fopen("ind.ind", "a+");
-	fclose(arquivo);
-	arquivo = fopen("dir.txt", "a+");
-	string = createLine("","");
-	for(i=0;i<10000;i++){
-		fprintf(arquivo, "%s\n", string);
-	}
-	fclose(arquivo);
 
-  return 0;
+    int i;
+    char *string;
+    FILE *arquivo;
+    arquivo = fopen("seq.txt", "a+");
+    fclose(arquivo);
+    arquivo = fopen("ind.txt", "a+");
+    fclose(arquivo);
+    arquivo = fopen("ind.ind", "a+");
+    fclose(arquivo);
+    arquivo = fopen("dir.txt", "a+");
+    string = createLine("","");
+    for(i=0;i<10000;i++){
+        fprintf(arquivo, "%s\n", string);
+    }
+    fclose(arquivo);
+
+    return 0;
 }
