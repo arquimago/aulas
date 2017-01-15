@@ -164,6 +164,7 @@ void excluirD(char *arq, char *chave){
 
 int main(){
 	int i;
+	char *string;
 	FILE *arquivo;
 	arquivo = fopen("seq.txt", "a+");
 	fclose(arquivo);
@@ -172,8 +173,8 @@ int main(){
 	arquivo = fopen("ind.ind", "a+");
 	fclose(arquivo);
 	arquivo = fopen("dir.txt", "a+");
+	string = createLine("","");
 	for(i=0;i<10000;i++){
-		string = createLine("","");
 		fprintf(arquivo, "%s\n", string);
 	}
 	fclose(arquivo);
