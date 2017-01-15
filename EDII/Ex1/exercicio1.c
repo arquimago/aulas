@@ -131,28 +131,33 @@ int hash(char *chave){
 void lerD(char *arq, char *chave){
 	int linha = hash(chave);
 	fseek(arquivo, linha*100, SEEK_SET);
-	
+	char *reg;
+	fscanf(arquivo,"%s", &reg);
+	printf("Registro encontrado: %s\n", reg);	
 	return;
 }
 
 void gravarD(char *arq, char *chave){
 	int linha = hash(chave);
 	fseek(arquivo, linha*100, SEEK_SET);
-	
+	char* string = createLine(chave,chave);
+	fprintf(arquivo, "%s\n", string);
 	return;
 }
 
-void modificarD(char *arq, char *chave){
+void modificarD(char *arq, char *chave, char *newreg){
 	int linha = hash(chave);
 	fseek(arquivo, linha*100, SEEK_SET);
-	
+	char* string = createLine(chave,new_reg);
+	fprintf(arquivo, "%s\n", string);
 	return;
 }
 
 void excluirD(char *arq, char *chave){
 	int linha = hash(chave);
 	fseek(arquivo, linha*100, SEEK_SET);
-	
+	string = createLine("","");
+	fprintf(arquivo, "%s\n", string);
 	return;
 }
 
