@@ -80,6 +80,7 @@ void excluirS(char *arq, char *chave){
 }
 
 void lerI(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r");
 	int indice = lerS("ind.ind",chave);
 	
 }
