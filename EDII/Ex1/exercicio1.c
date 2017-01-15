@@ -94,19 +94,57 @@ void lerI(char *arq, char *chave){
 	return;
 }
 
-void gravarI(char *arq, char *chave){}
+void gravarI(char *arq, char *chave){
+	return;
+}
 
-void modificarI(char *arq, char *chave){}
+void modificarI(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
+	char *reg;
+	int linha = lerS("ind.ind",chave);
+	
+	
+	return;
+}
 
-void excluirI(char *arq, char *chave){}
+void excluirI(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
+	char *reg;
+	int linha = lerS("ind.ind",chave);
+	
+	//no final usar excluirS no "ind.ind" 
+	return;
+}
 
-void lerD(char *arq, char *chave){}
+int hash(char *chave){
+	int hash = 0;
+	int i;
+	for(i=0;i<strlen(chave);i++){
+		hash+=chave[i];
+	}
+	hash%=10007;
+	return hash;
+}
 
-void gravarD(char *arq, char *chave){}
+void lerD(char *arq, char *chave){
+	
+	return;
+}
 
-void modificarD(char *arq, char *chave){}
+void gravarD(char *arq, char *chave){
+	
+	return;
+}
 
-void excluirD(char *arq, char *chave){}
+void modificarD(char *arq, char *chave){
+	
+	return;
+}
+
+void excluirD(char *arq, char *chave){
+	
+	return;
+}
 
 
 int main(){
