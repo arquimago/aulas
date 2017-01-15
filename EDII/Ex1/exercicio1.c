@@ -34,6 +34,7 @@ int lerS(char *arq, char *chave){
 	if(flag){
 		printf("Chave não encontrada");
 		temp = -1;
+		linha = -1;
 	}
 	fclose(arquivo);
 	return linha;
@@ -81,8 +82,16 @@ void excluirS(char *arq, char *chave){
 
 void lerI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r");
-	int indice = lerS("ind.ind",chave);
-	
+	char *reg;
+	int linha = lerS("ind.ind",chave);
+	if(linha>=0) {
+		fseek(arquivo, linha*100, SEEK_SET);
+		fscanf(arquivo,"%s", &reg);
+		printf("Registro encontrado: %s\n", reg);	
+	}else{
+		printf("Registro não encontrado";
+	}
+	return;
 }
 
 void gravarI(char *arq, char *chave){}
