@@ -53,6 +53,7 @@ void modificarS(char *arq, char *chave, char *new_reg){
 	char* string = createLine(chave,new_reg);
 	fseek(arquivo, linha*100, SEEK_SET);
 	fprintf(arquivo, "%s\n", string);
+	fclose(arquivo);
 }
 
 void excluirS(char *arq, char *chave){
@@ -63,24 +64,39 @@ void excluirS(char *arq, char *chave){
 	fseek(arquivo, linha*100, SEEK_SET);
 	string = createLine("","");
 	fprintf(arquivo, "%s\n", string);
-    //Falta a função para ir deslocando as linhas
+    //acho que o while abaixo resolve a subida das linhas
+	while(fscanf(arquivo,"%[^\n]s",string);!=EOF){
+		fseek(arquivo, linha*100, SEEK_SET);
+		fprintf(arquivo, "%s\n", string);
+		linha++;
+	}
+	//as linhas abaixo são pra remover a linha duplicada que fica no final
+	linha--;
+	fseek(arquivo, linha*100, SEEK_SET);
+	string = createLine("","");
+	fprintf(arquivo, "%s\n", string);
+	
+	fclose(arquivo);
 }
 
-void lerI(char *arq, int chave){}
+void lerI(char *arq, char *chave){
+	int indice = lerS("ind.ind",chave);
+	
+}
 
-void gravarI(char *arq, int chave){}
+void gravarI(char *arq, char *chave){}
 
-void modificarI(char *arq, int chave){}
+void modificarI(char *arq, char *chave){}
 
-void excluirI(char *arq, int chave){}
+void excluirI(char *arq, char *chave){}
 
-void lerD(char *arq, int chave){}
+void lerD(char *arq, char *chave){}
 
-void gravarD(char *arq, int chave){}
+void gravarD(char *arq, char *chave){}
 
-void modificarD(char *arq, int chave){}
+void modificarD(char *arq, char *chave){}
 
-void excluirD(char *arq, int chave){}
+void excluirD(char *arq, char *chave){}
 
 
 int main(){
