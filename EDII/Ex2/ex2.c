@@ -5,7 +5,7 @@
 #include <time.h>
 
 int lista1 = {26,76,39,61,25,10,16,70,53}; //9 elementos
-int lista3 = {967,875,985,214,357,248,137,864,247,135}; //10 elementos
+int lista2 = {967,875,985,214,357,248,137,864,247,135}; //10 elementos
 
 int hash1(int num){
 	int hash = 0;
@@ -58,16 +58,24 @@ int desloc4(int num){
 int main(){
 	printf("Lista de Exercícios - Parte 2\n");
 	printf("Exercício 1\n");
+	printf("letra a)\n");
 	
+	printf("letra b)\n");
 	
-	printf("Exercício 2\n");
+	printf("\nExercício 2\n");
+	printf("letra a)\n");
 	
+	printf("letra b)\n");
 	
-	printf("Exercício 3\n");
+	printf("\nExercício 3\n");
+	printf("letra a)\n");
 	
+	printf("letra b)\n");
 	
-	printf("Exercício 4\n");
+	printf("\nExercício 4\n");
+	printf("letra a)\n");
 	
+	printf("letra b)\n");
 	
 	return 0;
 }
