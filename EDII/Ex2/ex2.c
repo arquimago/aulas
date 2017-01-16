@@ -9,7 +9,7 @@ int lista2 = {967,875,985,214,357,248,137,864,247,135}; //10 elementos
 
 int hash1(int num){
 	int hash = 0;
-	hash=num%7;
+	hash=num%11;
 	return hash;
 }
 
