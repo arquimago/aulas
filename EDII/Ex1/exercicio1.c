@@ -117,12 +117,7 @@ void excluirI(char *arq, char *chave){
 }
 
 int hash(char *chave){
-	int hash = 0;
-	int i;
-	for(i=0;i<strlen(chave);i++){
-		hash+=(chave[i]-48);
-		//um char numerico -48 dá como resultado seu valor em int
-	}
+	int hash = atoi(chave);
 	hash%=10007;
 	//sim, 10.007 é primo perguntei ao Wolfram Alpha
 	return hash;
