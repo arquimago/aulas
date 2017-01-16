@@ -13,7 +13,7 @@ char* createLine(char* chave, char* reg){
     strcat(string," ");
     strcat(string,reg);
     aux = strlen(string);
-    for (i=aux;i<TAM-1;i++)
+    for (i=aux;i<=TAM-1;i++)
         string[i] = ' ';
     string[TAM]='\0';
 	return string;
@@ -103,8 +103,6 @@ void modificarI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
 	char *reg;
 	int linha = lerS("ind.ind",chave);
-
-
 	return;
 }
 
@@ -128,7 +126,8 @@ void lerD(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
 	int linha = hash(chave);
 	fseek(arquivo, (linha-1)*100, SEEK_SET);
-	char *reg;
+    char index[TAM],reg[TAM];
+	fscanf(arquivo,"%s", &index);
 	fscanf(arquivo,"%s", &reg);
 	printf("Registro encontrado: %s\n", reg);
 	return;
@@ -180,14 +179,8 @@ int main(){
         fprintf(arquivo, "%s\n", string);
     }
     fclose(arquivo);
-	
-	gravarD("dir.txt","21");
-	gravarD("dir.txt","231");
-	gravarD("dir.txt","2131");
-	
-	gravarS("seq.txt","21");
-	gravarS("seq.txt","231");
-	gravarS("seq.txt","2131");
-	
+
+	lerD("dir.txt","2");
+
     return 0;
 }
