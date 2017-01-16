@@ -13,9 +13,10 @@ char* createLine(char* chave, char* reg){
     strcat(string," ");
     strcat(string,reg);
     aux = strlen(string);
-    for (i=aux;i<TAM;i++)
+    for (i=aux;i<TAM-1;i++)
         string[i] = ' ';
-    return string;
+    string[TAM]='\0';
+	return string;
 }
 
 int lerS(char *arq, char *chave){
@@ -137,7 +138,6 @@ void gravarD(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
 	int linha = hash(chave);
 	fseek(arquivo, (linha-1)*100, SEEK_SET);
-	printf("%d ", linha);
 	char* string = createLine(chave,chave);
 	fprintf(arquivo, "%s\n", string);
 	return;
@@ -180,6 +180,14 @@ int main(){
         fprintf(arquivo, "%s\n", string);
     }
     fclose(arquivo);
-
+	
+	gravarD("dir.txt","21");
+	gravarD("dir.txt","231");
+	gravarD("dir.txt","2131");
+	
+	gravarS("seq.txt","21");
+	gravarS("seq.txt","231");
+	gravarS("seq.txt","2131");
+	
     return 0;
 }
