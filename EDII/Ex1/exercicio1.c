@@ -33,7 +33,7 @@ int lerS(char *arq, char *chave){
 		linha++;
 	}
 	if(flag){
-		printf("Chave não encontrada");
+		printf("Chave não encontrada\n");
 		temp = -1;
 		linha = -1;
 	}
@@ -42,16 +42,45 @@ int lerS(char *arq, char *chave){
 }
 
 void gravarS(char *arq, char *chave){
-	FILE *arquivo;
-	arquivo = fopen(arq, "a+");
-	char* string = createLine(chave, chave);
-	fprintf(arquivo,"%s\n", string);
+	FILE *arquivo = fopen(arq, "r+");
+	int value_index, value_chave, flag = -1, linha = 1;
+    char index[TAM],reg[TAM], aux_index[TAM], aux_reg[TAM];
+    char* string;
+    while(fscanf(arquivo,"%s",&index)!=EOF){
+		fscanf(arquivo,"%s", &reg);
+		value_index = atoi(index);
+		value_chave = atoi(chave);
+		if(!flag){
+			string = createLine(aux_index, aux_reg);
+			fseek(arquivo, (linha-1)*100, SEEK_SET);
+			fprintf(arquivo,"%s\n", string);
+			strcpy(aux_index,index);
+			strcpy(aux_reg,reg);
+		}
+		else if(value_index >= value_chave) {
+			string = createLine(chave, chave);
+			fseek(arquivo, (linha-1)*100, SEEK_SET);
+			fprintf(arquivo,"%s\n", string);
+			strcpy(aux_index,index);
+			strcpy(aux_reg,reg);
+			flag=0;
+		}
+		linha++;
+	}
+	if(flag){
+		string = createLine(chave, chave);
+		fprintf(arquivo,"%s\n", string);
+	}else{
+		string = createLine(aux_index, aux_reg);
+		fprintf(arquivo,"%s\n", string);
+	}
+
 	fclose(arquivo);
 }
 
 void modificarS(char *arq, char *chave, char *new_reg){
 	FILE *arquivo = fopen(arq, "r+");
-	int linha = lerS("seq.txt", chave);
+	int linha = lerS(arq, chave);
 	char* string = createLine(chave, new_reg);
 	fseek(arquivo, linha*100, SEEK_SET);
 	fprintf(arquivo, "%s\n", string);
@@ -60,59 +89,97 @@ void modificarS(char *arq, char *chave, char *new_reg){
 
 void excluirS(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
-	int linha = lerS("seq.txt", chave);
+	int linha = lerS(arq, chave);
 	char* string;
-	char index[TAM],reg[TAM], aux[TAM];
-	fseek(arquivo, linha*100, SEEK_SET);
-	string = createLine("","");
-	fprintf(arquivo, "%s\n", string);
-    //acho que o while abaixo resolve a subida das linhas
-	while(fscanf(arquivo,"%[^\n]s",string) !=EOF){
-		fseek(arquivo, linha*100, SEEK_SET);
-		fprintf(arquivo, "%s\n", string);
-		linha++;
+    char index[TAM],reg[TAM];
+	linha++;
+	fseek(arquivo, (linha)*100, SEEK_SET);
+	if(linha != 0){
+	   	while(fscanf(arquivo,"%s",&index)!=EOF){
+			fscanf(arquivo,"%s", &reg);
+			string = createLine(index, reg);
+			fseek(arquivo, (linha-1)*100, SEEK_SET);
+			fprintf(arquivo,"%s\n", string);
+			linha++;
+			fseek(arquivo, (linha)*100, SEEK_SET);
+		}
+		//Limpa a ultima linha
+		string = createLine("","");
+		fseek(arquivo, (linha-1)*100, SEEK_SET);
+		fprintf(arquivo,"%s\n", string);
+	}else{
+		//Chave não encontrada!
 	}
-	//as linhas abaixo são pra remover a linha duplicada que fica no final
-	linha--;
-	fseek(arquivo, linha*100, SEEK_SET);
-	string = createLine("","");
-	fprintf(arquivo, "%s\n", string);
-
 	fclose(arquivo);
 }
 
-void lerI(char *arq, char *chave){
-	FILE *arquivo = fopen(arq, "r");
-	char *reg;
-	int linha = lerS("ind.ind",chave);
-	if(linha>=0) {
-		fseek(arquivo, linha*100, SEEK_SET);
+int lerI(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
+	FILE *aux_arquivo = fopen("ind.ind", "r+");
+    char index[TAM],reg[TAM];	
+	int linha = -1, flag=1;
+	while(fscanf(aux_arquivo,"%s",&index)!=EOF){
+		fscanf(aux_arquivo,"%s", &reg);
+		if(strcmp(index,chave) == 0){
+			linha = atoi(reg);
+			fseek(arquivo,linha*100,SEEK_SET);
+			fscanf(arquivo,"%s",&index);
+			fscanf(arquivo,"%s",&reg);
+			printf("Registro encontrado: %s\n", reg);
+			flag=0;
+			break;
+		}
+	}if(flag){
+		printf("Chave não encontrada\n");
+	}
+	return linha;
+}
+
+void gravarI(char *arq, char *chave){
+	FILE *arquivo = fopen(arq, "r+");
+	char *string;
+    char index[TAM],reg[TAM], aux[10];
+    int linha = 0;
+    while(fscanf(arquivo,"%s",&index)!=EOF){
 		fscanf(arquivo,"%s", &reg);
-		printf("Registro encontrado: %s\n", reg);
-	}else{
-		printf("Registro não encontrado");
+		if(strcmp(index,"#") == 0){
+			gravarS("ind.ind",chave);
+			sprintf(aux,"%d", linha);
+			modificarS("ind.ind",chave,aux);
+			string = createLine(chave, chave);
+			fseek(arquivo,linha*100,SEEK_SET);
+			fprintf(arquivo,"%s\n",string);
+			break;
+		}
+		linha++;
 	}
 	return;
 }
 
-void gravarI(char *arq, char *chave){
-	return;
-}
-
-void modificarI(char *arq, char *chave){
+void modificarI(char *arq, char *chave, char *new_reg){
 	FILE *arquivo = fopen(arq, "r+");
-	char *reg;
-	int linha = lerS("ind.ind",chave);
+	int linha = lerI(arq,chave);
+	if (linha != -1){
+		char *string = createLine(chave, new_reg);
+		fseek(arquivo, linha*100, SEEK_SET);
+		fprintf(arquivo, "%s\n", string);
+	}else{
+		printf("Chave não encontrada\n");
+	}
 	return;
 }
 
 void excluirI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
-	char *reg;
-	int linha = lerS("ind.ind",chave);
-
-	//no final usar excluirS no "ind.ind"
-	return;
+	int linha = lerI(arq, chave);
+	if(linha != -1){
+		excluirS("ind.ind", chave);
+		char *string = createLine("#","#");
+		fseek(arquivo,linha*100,SEEK_SET);
+		fprintf(arquivo, "%s\n", string);
+	}else{
+		printf("Chave não encontrada\n");
+	}
 }
 
 int hash(char *chave){
@@ -170,6 +237,10 @@ int main(){
     arquivo = fopen("seq.txt", "a+");
     fclose(arquivo);
     arquivo = fopen("ind.txt", "a+");
+    string = createLine("#","#");
+    for(i=0;i<10000;i++){
+        fprintf(arquivo, "%s\n", string);
+    }    
     fclose(arquivo);
     arquivo = fopen("ind.ind", "a+");
     fclose(arquivo);
@@ -180,7 +251,7 @@ int main(){
     }
     fclose(arquivo);
 
-	lerD("dir.txt","2");
-
+    //Testar funções
+    
     return 0;
 }
