@@ -23,8 +23,10 @@ int lerS(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r");
 	int temp,linha=0,flag=1;
     char index[TAM],reg[TAM];
+    //Percorre arquivo
     while(fscanf(arquivo,"%s",&index)!=EOF){
 		fscanf(arquivo,"%s", &reg);
+		//Se encontrar a chave desejada, imprima
 		if(strcmp(index,chave) == 0) {
 			printf("Registro encontrado: %s\n", reg);
 			flag=0;
@@ -32,6 +34,7 @@ int lerS(char *arq, char *chave){
 		}
 		linha++;
 	}
+	//Se não encontrar, imprima
 	if(flag){
 		printf("Chave não encontrada\n");
 		temp = -1;
@@ -46,10 +49,12 @@ void gravarS(char *arq, char *chave){
 	int value_index, value_chave, flag = -1, linha = 1;
     char index[TAM],reg[TAM], aux_index[TAM], aux_reg[TAM];
     char* string;
+    //Percorre arquivo
     while(fscanf(arquivo,"%s",&index)!=EOF){
 		fscanf(arquivo,"%s", &reg);
 		value_index = atoi(index);
 		value_chave = atoi(chave);
+		//Salve a proxima chave na linha anterior
 		if(!flag){
 			string = createLine(aux_index, aux_reg);
 			fseek(arquivo, (linha-1)*100, SEEK_SET);
@@ -57,6 +62,7 @@ void gravarS(char *arq, char *chave){
 			strcpy(aux_index,index);
 			strcpy(aux_reg,reg);
 		}
+		//Se a chave lida for maior ou igual a chave a ser inserida, insira a nova chave no lugar e salve a seguinte em um aux
 		else if(value_index >= value_chave) {
 			string = createLine(chave, chave);
 			fseek(arquivo, (linha-1)*100, SEEK_SET);
@@ -67,18 +73,18 @@ void gravarS(char *arq, char *chave){
 		}
 		linha++;
 	}
+	//Se for a ultima linha, insira no final do arquivo.
 	if(flag){
 		string = createLine(chave, chave);
 		fprintf(arquivo,"%s\n", string);
-	}else{
+	}else{//Se não for a ultima linha, insira a variável que faltou do while
 		string = createLine(aux_index, aux_reg);
 		fprintf(arquivo,"%s\n", string);
 	}
-
 	fclose(arquivo);
 }
 
-void modificarS(char *arq, char *chave, char *new_reg){
+void modificarS(char *arq, char *chave, char *new_reg){//Encontra chave e modifica
 	FILE *arquivo = fopen(arq, "r+");
 	int linha = lerS(arq, chave);
 	char* string = createLine(chave, new_reg);
@@ -87,7 +93,7 @@ void modificarS(char *arq, char *chave, char *new_reg){
 	fclose(arquivo);
 }
 
-void excluirS(char *arq, char *chave){
+void excluirS(char *arq, char *chave){//Encontra chave, remove e organiza o arquivo
 	FILE *arquivo = fopen(arq, "r+");
 	int linha = lerS(arq, chave);
 	char* string;
@@ -118,10 +124,13 @@ int lerI(char *arq, char *chave){
 	FILE *aux_arquivo = fopen("ind.ind", "r+");
     char index[TAM],reg[TAM];	
 	int linha = -1, flag=1;
+	//Percorre o arquivo ind.ind
 	while(fscanf(aux_arquivo,"%s",&index)!=EOF){
 		fscanf(aux_arquivo,"%s", &reg);
+		//Encontra chave
 		if(strcmp(index,chave) == 0){
 			linha = atoi(reg);
+			//Vai até a linha e imprime o valor de reg
 			fseek(arquivo,linha*100,SEEK_SET);
 			fscanf(arquivo,"%s",&index);
 			fscanf(arquivo,"%s",&reg);
@@ -140,12 +149,17 @@ void gravarI(char *arq, char *chave){
 	char *string;
     char index[TAM],reg[TAM], aux[10];
     int linha = 0;
+    //Percorre ind.txt
     while(fscanf(arquivo,"%s",&index)!=EOF){
 		fscanf(arquivo,"%s", &reg);
+		//Encontra uma posição vazia (# # = Sem dados)
 		if(strcmp(index,"#") == 0){
+			//Grava a chave no ind.ind
 			gravarS("ind.ind",chave);
 			sprintf(aux,"%d", linha);
+			//Modifica no ind.ind com a linha no reg
 			modificarS("ind.ind",chave,aux);
+			//Salva a chave no arquivo ind.txt
 			string = createLine(chave, chave);
 			fseek(arquivo,linha*100,SEEK_SET);
 			fprintf(arquivo,"%s\n",string);
@@ -158,8 +172,10 @@ void gravarI(char *arq, char *chave){
 
 void modificarI(char *arq, char *chave, char *new_reg){
 	FILE *arquivo = fopen(arq, "r+");
+	//Procura se exite a chave no ind.txt
 	int linha = lerI(arq,chave);
 	if (linha != -1){
+		//Vai até a linha e altera o valor
 		char *string = createLine(chave, new_reg);
 		fseek(arquivo, linha*100, SEEK_SET);
 		fprintf(arquivo, "%s\n", string);
@@ -171,9 +187,12 @@ void modificarI(char *arq, char *chave, char *new_reg){
 
 void excluirI(char *arq, char *chave){
 	FILE *arquivo = fopen(arq, "r+");
+	//Procura se exite a chave no ind.txt
 	int linha = lerI(arq, chave);
 	if(linha != -1){
+		//Exclui a chave no ind.ind
 		excluirS("ind.ind", chave);
+		//Exclui a chave no ind.txt
 		char *string = createLine("#","#");
 		fseek(arquivo,linha*100,SEEK_SET);
 		fprintf(arquivo, "%s\n", string);
