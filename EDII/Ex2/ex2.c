@@ -4,6 +4,11 @@
 #include <math.h>
 #include <time.h>
 
+//EQUIPE
+//Elton
+//João Matheus
+//Thales Francisco
+
 int hash1(int num){
 	int hash = 0;
 	hash=num%11;

@@ -6,6 +6,11 @@
 
 #define TAM 99
 
+//EQUIPE
+//Elton
+//João Matheus
+//Thales Francisco
+
 char* createLine(char* chave, char* reg){
    	int aux, i;
     char *string = (char *) malloc(sizeof(char) * TAM);
