@@ -87,6 +87,7 @@ void gravarS(char *arq, char *chave){
 		fprintf(arquivo,"%s\n", string);
 	}
 	fclose(arquivo);
+	return;
 }
 
 void modificarS(char *arq, char *chave, char *new_reg){//Encontra chave e modifica
@@ -122,6 +123,7 @@ void excluirS(char *arq, char *chave){//Encontra chave, remove e organiza o arqu
 		//Chave não encontrada!
 	}
 	fclose(arquivo);
+	return;
 }
 
 int lerI(char *arq, char *chave){
@@ -146,6 +148,7 @@ int lerI(char *arq, char *chave){
 	}if(flag){
 		printf("Chave não encontrada\n");
 	}
+	fclose(arquivo);
 	return linha;
 }
 
@@ -172,6 +175,7 @@ void gravarI(char *arq, char *chave){
 		}
 		linha++;
 	}
+	fclose(arquivo);
 	return;
 }
 
@@ -188,6 +192,7 @@ void modificarI(char *arq, char *chave, char *new_reg){
 		printf("Chave não encontrada\n");
 	}
 	return;
+	fclose(arquivo);
 }
 
 void excluirI(char *arq, char *chave){
@@ -204,6 +209,8 @@ void excluirI(char *arq, char *chave){
 	}else{
 		printf("Chave não encontrada\n");
 	}
+	fclose(arquivo);
+	return;	
 }
 
 int hash(char *chave){
@@ -221,6 +228,7 @@ void lerD(char *arq, char *chave){
 	fscanf(arquivo,"%s", &index);
 	fscanf(arquivo,"%s", &reg);
 	printf("Registro encontrado: %s\n", reg);
+	fclose(arquivo);
 	return;
 }
 
@@ -230,6 +238,7 @@ void gravarD(char *arq, char *chave){
 	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	char* string = createLine(chave,chave);
 	fprintf(arquivo, "%s\n", string);
+	fclose(arquivo);
 	return;
 }
 
@@ -239,6 +248,7 @@ void modificarD(char *arq, char *chave, char *new_reg){
 	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	char* string = createLine(chave,new_reg);
 	fprintf(arquivo, "%s\n", string);
+	fclose(arquivo);
 	return;
 }
 
@@ -249,6 +259,7 @@ void excluirD(char *arq, char *chave){
 	fseek(arquivo, (linha-1)*100, SEEK_SET);
 	string = createLine("","");
 	fprintf(arquivo, "%s\n", string);
+	fclose(arquivo);
 	return;
 }
 
