@@ -270,7 +270,65 @@ int main(){
     }
     fclose(arquivo);
 
-    //Testar funções
+    //Exercicio 01
+
+    //OBS: Será impresso na tela algumas vezes "Resultados Encontrados"
+    //Isso ocorre, pois utilizamos a mesma função para lerS/I/D diversas vezes
+
+    //1. Sequencial ordenado
     
+    //a) Gravar
+    gravarS("seq.txt","5");
+    gravarS("seq.txt","4");
+    gravarS("seq.txt","3");
+	gravarS("seq.txt","2");    
+	gravarS("seq.txt","1");
+    
+	//b) Ler
+	lerS("seq.txt", "2");
+
+	//c) Modificar
+	modificarS("seq.txt", "2", "200");
+
+	//d)Excluir
+	excluirS("seq.txt", "3");
+
+    //2. Indexado
+    //OBS: Utilizamos o padrão # #, para sinalizar que uma linha está vazia
+
+    //a) Gravar
+    gravarI("ind.txt","5");
+    gravarI("ind.txt","4");
+    gravarI("ind.txt","3");
+	gravarI("ind.txt","2");    
+	gravarI("ind.txt","1");
+    
+	//b) Ler
+	lerI("ind.txt", "2");
+
+	//c) Modificar
+	modificarI("ind.txt", "2", "200");
+
+	//d)Excluir
+	excluirI("ind.txt", "3");
+    
+    //3. Direto
+
+    //a) Gravar
+    gravarD("dir.txt","5");
+    gravarD("dir.txt","4");
+    gravarD("dir.txt","3");
+	gravarD("dir.txt","2");    
+	gravarD("dir.txt","1");
+    
+	//b) Ler
+	lerD("dir.txt", "2");
+
+	//c) Modificar
+	modificarD("dir.txt", "2", "200");
+
+	//d)Excluir
+	excluirD("dir.txt", "3");
+
     return 0;
 }
