@@ -44,9 +44,89 @@ FILE* abreArquivo(int codigo){
 }
 
 int main(){
-	FILE *teste;
-	teste = abreArquivo(12340000);
-	fputs("teste",teste);
-	fclose(teste);
-	return;
+	//controladores do sistema
+	int maiorchavepost = 0; // carregar do arquivo que diz a maior chave de post ja adicionada
+	int maiorchaveresp = 0; // carregar do arquivo que diz a maior chave de resposta ja adicionada
+	int postsetado = 0; // setar quando o ususario selecionar um post no submenu
+	int respostasetada = 0; // setar quando o usuario escolher uma resposta no submenu
+	//////////////////////////
+	int opcao;
+	int opcao2;
+	int opcao3;
+	while(1){
+		do{
+			system("cls");
+			printf("\n-----------------Forum--------------\n");
+			printf("1 - Ver Posts\n");
+			printf("2 - Postar\n");
+			printf("3 - Pesquisar\n");
+			printf("4 - Sair\n");
+			printf("\n------------------------------------\n");
+			scanf("%d", &opcao);
+			if(opcao == 4){//Sair
+				return 0;
+			}
+		}while(opcao != 1 && opcao != 2 && opcao != 3);
+    if(opcao == 1){//Ver Posts
+
+        do{
+            system("cls");
+            printf("\n--------Lista de Posts----------\n");
+            // LISTARPOSTS()
+                //chave1 - msg
+                //chave2 - msg
+            // SETARPOST() setar como post escolhido o de chave1 ou de chave2
+            printf("\n------Informações do Post--------\n");
+            printf("1 - Respostas Posts\n");
+            printf("2 - Apagar Post\n");
+            printf("3 - Voltar\n");
+            printf("\n---------------------------------\n");
+            scanf("%d", &opcao2);
+        }while(opcao2 != 1 && opcao2 != 2 && opcao2 != 3);
+        if(opcao2 == 1){// Respostas
+
+                do{
+                    system("cls");
+                    printf("\n------Respostas--------\n");
+                    printf("1 - Responder\n");
+                    printf("2 - Apagar Resposta\n");
+                    printf("3 - Voltar\n");
+                    scanf("%d", &opcao3);
+                }while(opcao3 != 1 && opcao3 != 2 && opcao3 != 3);
+                if(opcao3 == 1){
+
+                }else if(opcao3 == 2){
+                    // LISTARRESPOSTAS()
+                        //chave1 - msg
+                        //chave2 - msg
+                    // SETARRESPOSTA() setar como resposta escolhida a de chave1 ou de chave2 e imediatamente "deletar"
+                }else{
+
+                }
+
+        }else if(opcao2 == 2){
+
+        }else{
+        }
+    }else if(opcao == 2){//Postar
+            FILE *teste;
+            maiorchavepost = maiorchavepost+1;
+            teste = abreArquivo(maiorchavepost);
+            //teste = abreResposta3(12345678);
+            char msg[31];
+            scanf("%s", msg);
+            fputs(msg,teste);
+            fclose(teste);
+    }else{//Pesquisar
+
+    }
+	}
+
+
+
+        //system("pause");
+
+
+        //postarResposta(1234,5678,"Ola pessoas o//");
+        return;
 }
